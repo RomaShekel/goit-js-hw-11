@@ -3,8 +3,6 @@ import "izitoast/dist/css/iziToast.min.css";
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 
-const lightbox = new SimpleLightbox('.gallery a');
-
 const form = document.querySelector("form");
 const input = document.querySelector(".input");
 const gallery = document.querySelector(".gallery");
@@ -14,10 +12,8 @@ form.addEventListener("submit", (event) => {
   event.preventDefault();
   const query = input.value;
 
-  loader.style.display = "flex";
-  setTimeout(() => {
+  loader.classList.add("visibility");
     searchImages(query);
-  }, 3000);
 });
 
 
@@ -28,7 +24,7 @@ function searchImages(query) {
 
   fetch(requestUrl)
     .then(response => { 
-      loader.style.display = 'none';
+      loader.classList.remove("visibility");
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -47,7 +43,7 @@ function searchImages(query) {
       }
     })
     .catch(error => {
-      loader.style.display = 'none';
+      loader.classList.remove("visibility");
       iziToast.error({
         title: 'Error',
         message: "Sorry, there was an error. Please try again later.",
@@ -81,8 +77,9 @@ function addImagesToGallery(images) {
     `;
 
     gallery.insertAdjacentHTML("beforeend", cardMarkup);
-  });
 
+  });
+  const lightbox = new SimpleLightbox('.gallery a');
   lightbox.refresh();
 }
 
